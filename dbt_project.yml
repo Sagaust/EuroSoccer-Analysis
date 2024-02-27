@@ -1,4 +1,4 @@
-name: 'my_new_project'
+name: 'LeWagon_Project_2'
 version: '1.0.0'
 config-version: 2
 
@@ -23,8 +23,55 @@ models:
       european_soccer:
         +schema: staging_european_soccer
         stg_players:
-          +materialized: view # Ensuring stg_players is materialized as a view
+          +materialized: view
+        stg_player_attributes:
+          +materialized: view
+        stg_match:
+          +materialized: view
+        stg_league:
+          +materialized: view
+        stg_country:
+          +materialized: view
+        stg_team:
+          +materialized: view
+        stg_team_attributes:
+          +materialized: view
     marts:
       +materialized: table
       european_soccer:
         +schema: mart_european_soccer
+        # mart model for player performance
+        mart_player_performance:
+          +materialized: table
+          +depends_on:
+            - ref('stg_players')
+            - ref('stg_player_attributes')
+            
+        mart_team_performance_overview:
+          +materialized: table
+          +depends_on:
+            - ref('stg_team')
+            - ref('stg_match')
+
+        mart_player_transfer_analysis:
+          +materialized: table
+          +depends_on:
+            - ref('stg_players')
+            - ref('stg_team')
+
+        mart_league_rankings_over_time:
+          +materialized: table
+          +depends_on:
+            - ref('stg_league')
+            - ref('stg_match')
+
+        mart_match_statistics_summary:
+          +materialized: table
+          +depends_on:
+            - ref('stg_match')
+
+        mart_player_career_trajectory:
+          +materialized: table
+          +depends_on:
+            - ref('stg_players')
+            - ref('stg_player_attributes')
