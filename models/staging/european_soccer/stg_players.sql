@@ -1,13 +1,21 @@
--- models/staging/european_soccer/stg_players.sql
+-- models/my_new_project/staging/european_soccer/stg_players.sql
+
+WITH source AS (
+    SELECT
+        player_api_id,
+        player_name,
+        birthday,
+        height,
+        weight
+    FROM {{ source('European_Soccer', 'Player') }}
+)
+
 SELECT
-  player_api_id,
-  player_name,
-  CAST(birthday AS DATE) AS birthday, -- Convert birthdate string to date format
-  height,
-  weight,
-  COALESCE(height, 0) AS height_clean, -- Example of handling missing values, setting them to a default
-  COALESCE(weight, 0) AS weight_clean
-FROM
-  `austwagonproject`.`European_Soccer`.`Player`
-WHERE
-  player_name IS NOT NULL; -- Filter out records with no player name
+    player_api_id,
+    player_name,
+    birthday,
+    height,
+    weight,
+    -- Correct calculation for age in BigQuery
+    DATE_DIFF(CURRENT_DATE(), CAST(birthday AS DATE), YEAR) AS age
+FROM source
