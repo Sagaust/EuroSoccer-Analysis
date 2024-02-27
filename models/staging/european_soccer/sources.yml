@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: European_Soccer
+    database: austwagonproject  # The BigQuery project ID
+    schema: European_Soccer  # The BigQuery dataset name
+    tables:
+      - name: Player
+      - name: Country
+      - name: League
+      - name: Match
+      - name: Player_Attributes
+      - name: Team
+      - name: Team_Attributes
