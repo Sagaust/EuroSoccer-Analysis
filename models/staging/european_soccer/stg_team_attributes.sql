@@ -2,7 +2,7 @@
 
 WITH source AS (
     SELECT
-        team_api_id,
+        team_api_id AS team_id,
         team_fifa_api_id,
         buildUpPlaySpeed,
         buildUpPlaySpeedClass,
@@ -30,7 +30,7 @@ WITH source AS (
 )
 
 SELECT
-    team_api_id,
+    team_id,
     team_fifa_api_id,
     buildUpPlaySpeed,
     buildUpPlaySpeedClass,

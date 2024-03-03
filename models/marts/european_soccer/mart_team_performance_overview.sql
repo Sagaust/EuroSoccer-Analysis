@@ -7,7 +7,7 @@ WITH match_outcomes AS (
         COUNT(CASE WHEN m.home_team_goal = m.away_team_goal THEN 1 END) AS draws,
         SUM(m.home_team_goal) AS goals_for,
         SUM(m.away_team_goal) AS goals_against
-    FROM `austwagonproject.European_Soccer.match` m
+    FROM `austwagonproject.European_Soccer.Match` m
     GROUP BY m.team_api_id
     UNION ALL
     SELECT
@@ -18,7 +18,7 @@ WITH match_outcomes AS (
         COUNT(CASE WHEN m.away_team_goal = m.home_team_goal THEN 1 END) AS draws,
         SUM(m.away_team_goal) AS goals_for,
         SUM(m.home_team_goal) AS goals_against
-    FROM `austwagonproject.European_Soccer.match` m
+    FROM `austwagonproject.European_Soccer.Match` m
     GROUP BY m.team_api_id
 ),
 aggregated_outcomes AS (
@@ -39,7 +39,7 @@ team_info AS (
         t.team_api_id,
         t.team_long_name,
         t.team_short_name
-    FROM `your_project_id.your_dataset.team` t
+    FROM `austwagonproject.European_Soccer.Team` t
 )
 
 SELECT
@@ -54,4 +54,4 @@ SELECT
     ao.goal_difference
 FROM team_info ti
 JOIN aggregated_outcomes ao ON ti.team_api_id = ao.team_api_id
-ORDER BY ao.wins DESC, ao.goal_difference DESC;
+ORDER BY ao.wins DESC, ao.goal_difference DESC
