@@ -6,9 +6,145 @@ sources:
     schema: European_Soccer  # The BigQuery dataset name
     tables:
       - name: Player
-      - name: Country
-      - name: League
-      - name: Match
+        description: "This table provides detailed information about football players, including identifiers, personal information (name, birthday), and physical attributes (height, weight)."
+        columns:
+          - name: id
+            type: Integer
+            description: "A unique identifier for each player."
+          - name: player_api_id
+            type: Integer
+            description: "An API identifier for the player."
+          - name: player_name
+            type: String
+            description: "The name of the player."
+          - name: player_fifa_api_id
+            type: Integer
+            description: "An identifier for the player in FIFA's database."
+          - name: birthday
+            type: Datetime
+            description: "The player's date of birth."
+          - name: height
+            type: Float
+            description: "The player's height in centimeters."
+          - name: weight
+            type: Integer
+            description: "The player's weight in pounds."
       - name: Player_Attributes
+        description: "This table details players' attributes, including skill ratings, playing characteristics, and physical attributes. Attributes cover overall rating, potential, preferred foot, work rates, and specific skills (e.g., crossing, finishing, heading accuracy) as well as goalkeeping skills (e.g., diving, handling, kicking)."
+        columns:
+          - name: id
+            type: Integer
+            description: "A unique identifier for each player's attribute record."
+          - name: player_fifa_api_id
+            type: Integer
+            description: "An identifier for the player in FIFA's database."
+          - name: player_api_id
+            type: Integer
+            description: "An API identifier for the player."
+          - name: date
+            type: Datetime
+            description: "The date when the attributes were recorded."
+          - name: overall_rating
+            type: Float
+            description: "The player's overall rating."
+          - name: potential
+            type: Float
+            description: "The player's potential rating."
+          - name: preferred_foot
+            type: String
+            description: "The player's preferred foot."
+          - name: attacking_work_rate
+            type: String
+            description: "The player's attacking work rate."
+          - name: defensive_work_rate
+            type: String
+            description: "The player's defensive work rate."
+          # Additional skill attributes and goalkeeping skills are grouped under specific skills and goalkeeping skills respectively
       - name: Team
+        description: "This table lists football teams, providing identifiers and names for each team. The dataset includes both API and FIFA identifiers, alongside the team's full and short names."
+        columns:
+          - name: id
+            type: Integer
+            description: "A unique identifier for each team."
+          - name: team_api_id
+            type: Integer
+            description: "An API identifier for the team."
+          - name: team_fifa_api_id
+            type: Float
+            description: "An identifier for the team in FIFA's database. This field may contain null values."
+          - name: team_long_name
+            type: String
+            description: "The full name of the team."
+          - name: team_short_name
+            type: String
+            description: "The short name or abbreviation of the team."
       - name: Team_Attributes
+        description: "This table details team attributes, showcasing team play styles and strategies across various dimensions such as build-up play, chance creation, and defense. It includes specific attributes like speed, dribbling, passing, positioning, aggression, team width, and defensive line tactics."
+        columns:
+          - name: id
+            type: Integer
+            description: "A unique identifier for each team's attribute record."
+          - name: team_fifa_api_id
+            type: Integer
+            description: "An identifier for the team in FIFA's database."
+          - name: team_api_id
+            type: Integer
+            description: "An API identifier for the team."
+          - name: date
+            type: Datetime
+            description: "The date when the attributes were recorded."
+          # Attributes related to team build-up play, chance creation, and defense strategies
+      - name: Country
+        description: "This table contains information about countries. Each row represents a country with a unique identifier and the country's name."
+        columns:
+          - name: id
+            type: Integer
+            description: "A unique identifier for each country."
+          - name: name
+            type: String
+            description: "The name of the country."
+      - name: League
+        description: "This table includes details on various football leagues. Each row corresponds to a league, identified by a unique ID, linked to a country, and named."
+        columns:
+          - name: id
+            type: Integer
+            description: "A unique identifier for each league."
+          - name: country_id
+            type: Integer
+            description: "The unique identifier for the country the league is associated with. This links to the Country table."
+          - name: name
+            type: String
+            description: "The name of the league."
+      - name: Match
+        description: "This table details football matches, including match identifiers, team information, and match outcomes. The dataset encompasses a wide range of columns, covering aspects from match scheduling (date, season, stage) to game results (goals scored by each team), team identifiers linking to the Team table, and extensive betting odds."
+        columns:
+          - name: id
+            type: Integer
+            description: "A unique identifier for each match."
+          - name: country_id
+            type: Integer
+            description: "Unique identifier for the country where the match takes place, linking to the Country table."
+          - name: league_id
+            type: Integer
+            description: "Unique identifier for the league of the match, linking to the League table."
+          - name: season
+            type: String
+            description: "The season during which the match was played."
+          - name: stage
+            type: Integer
+            description: "The stage of the league at which the match was played."
+          - name: date
+            type: Datetime
+            description: "The date and time when the match was played."
+          - name: home_team_api_id
+            type: Integer
+            description: "API identifier for the home team, linking to the Team table."
+          - name: away_team_api_id
+            type: Integer
+            description: "API identifier for the away team, linking to the Team table."
+          - name: home_team_goal
+            type: Integer
+            description: "The number of goals scored by the home team."
+          - name: away_team_goal
+            type: Integer
+            description: "The number of goals scored by the away team."

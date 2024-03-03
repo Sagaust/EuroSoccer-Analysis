@@ -34,4 +34,4 @@ SELECT
     pa.most_common_defensive_work_rate, 
     pa.num_appearances
 FROM player_info pi
-JOIN player_attributes pa ON pi.player_api_id = pa.player_api_id;
+JOIN player_attributes pa ON pi.player_api_id = pa.player_api_id
