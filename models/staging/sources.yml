@@ -1,3 +1,5 @@
+
+
 version: 2
 
 sources:
@@ -148,3 +150,14 @@ sources:
           - name: away_team_goal
             type: Integer
             description: "The number of goals scored by the away team."
+      - name: Player_Summary
+        description: "A summary table containing basic player identifiers and names."
+        columns:
+          - name: player_name
+            type: String
+            description: "The name of the player."
+          - name: player_api_id
+            type: Integer
+            description: "An API identifier for the player, linking to detailed records in the Player table."
+
+

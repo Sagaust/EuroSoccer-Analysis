@@ -3,7 +3,7 @@ WITH source_data AS (
     match_api_id,
     season,
     date AS game_date,
-    home_team_api_id AS team_id,
+    home_team_api_id,
     league_id,
     home_player_1, 
     home_player_2, 
@@ -28,7 +28,6 @@ WITH source_data AS (
     away_player_9, 
     away_player_10, 
     away_player_11,
-    away_team_api_id,
     home_team_goal,
     away_team_goal,
     

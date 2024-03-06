@@ -1,30 +1,59 @@
 -- models/team_efficiency.sql
-WITH team_performance AS (
-  SELECT
-    t.team_api_id,
-    t.team_long_name,
-    COUNT(m.match_api_id) AS total_matches,
-    SUM(CASE WHEN m.home_team_api_id = t.team_api_id AND m.home_team_goal > m.away_team_goal THEN 1
-             WHEN m.away_team_api_id = t.team_api_id AND m.away_team_goal > m.home_team_goal THEN 1
-             ELSE 0 END) AS wins,
-    SUM(CASE WHEN m.home_team_api_id = t.team_api_id AND m.home_team_goal = m.away_team_goal THEN 1
-             WHEN m.away_team_api_id = t.team_api_id AND m.away_team_goal = m.home_team_goal THEN 1
-             ELSE 0 END) AS draws,
-    SUM(CASE WHEN m.home_team_api_id = t.team_api_id AND m.home_team_goal < m.away_team_goal THEN 1
-             WHEN m.away_team_api_id = t.team_api_id AND m.away_team_goal < m.home_team_goal THEN 1
-             ELSE 0 END) AS losses
-  FROM
-    `austwagonproject.European_Soccer.Team` t
-  JOIN
-    `austwagonproject.European_Soccer.Match` m
-    ON t.team_api_id = m.home_team_api_id OR t.team_api_id = m.away_team_api_id
-  GROUP BY
-    t.team_api_id, t.team_long_name
-)
+with
+    team_performance as (
+        select
+            t.team_api_id,
+            t.team_long_name,
+            count(m.match_api_id) as total_matches,
+            sum(
+                case
+                    when
+                        m.home_team_api_id = t.team_api_id
+                        and m.home_team_goal > m.away_team_goal
+                    then 1
+                    when
+                        m.away_team_api_id = t.team_api_id
+                        and m.away_team_goal > m.home_team_goal
+                    then 1
+                    else 0
+                end
+            ) as wins,
+            sum(
+                case
+                    when
+                        m.home_team_api_id = t.team_api_id
+                        and m.home_team_goal = m.away_team_goal
+                    then 1
+                    when
+                        m.away_team_api_id = t.team_api_id
+                        and m.away_team_goal = m.home_team_goal
+                    then 1
+                    else 0
+                end
+            ) as draws,
+            sum(
+                case
+                    when
+                        m.home_team_api_id = t.team_api_id
+                        and m.home_team_goal < m.away_team_goal
+                    then 1
+                    when
+                        m.away_team_api_id = t.team_api_id
+                        and m.away_team_goal < m.home_team_goal
+                    then 1
+                    else 0
+                end
+            ) as losses
+        from `austwagonproject.European_Soccer.Team` t
+        join
+            `austwagonproject.European_Soccer.Match` m
+            on t.team_api_id = m.home_team_api_id
+            or t.team_api_id = m.away_team_api_id
+        group by t.team_api_id, t.team_long_name
+    )
 
-SELECT
-  *,
-  (wins * 3 + draws) AS total_points,
-  ROUND((wins * 3 + draws) / total_matches, 2) AS efficiency
-FROM
-  team_performance
+select
+    *,
+    (wins * 3 + draws) as total_points,
+    round((wins * 3 + draws) / total_matches, 2) as efficiency
+from team_performance
