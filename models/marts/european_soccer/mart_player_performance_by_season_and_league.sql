@@ -1,4 +1,6 @@
 -- models/marts/european_soccer/mart_player_performance_season_league.sql
+{{ config(materialized='table') }}
+
 with
     match_performance as (
         select
