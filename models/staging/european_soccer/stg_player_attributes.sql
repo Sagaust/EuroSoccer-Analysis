@@ -1,57 +1,9 @@
--- models/my_new_project/staging/european_soccer/stg_player_attributes.sql
-
-WITH source AS (
-    SELECT
-        player_api_id,
-        overall_rating,
-        potential,
-        preferred_foot,
-        attacking_work_rate,
-        defensive_work_rate,
-        crossing,
-        finishing,
-        heading_accuracy,
-        short_passing,
-        volleys,
-        dribbling,
-        curve,
-        free_kick_accuracy,
-        long_passing,
-        ball_control,
-        acceleration,
-        sprint_speed,
-        agility,
-        reactions,
-        balance,
-        shot_power,
-        jumping,
-        stamina,
-        strength,
-        long_shots,
-        aggression,
-        interceptions,
-        positioning,
-        vision,
-        penalties,
-        marking,
-        standing_tackle,
-        sliding_tackle,
-        gk_diving,
-        gk_handling,
-        gk_kicking,
-        gk_positioning,
-        gk_reflexes,
-        date
-    FROM {{ source('European_Soccer', 'Player_Attributes') }}
-)
-
 SELECT
-    player_api_id,
+    player_api_id AS player_id,
+    PARSE_DATE('%Y-%m-%d', SUBSTR(CAST(date AS STRING), 0, 10)) AS date_attributes,
     overall_rating,
     potential,
     preferred_foot,
-    attacking_work_rate,
-    defensive_work_rate,
     crossing,
     finishing,
     heading_accuracy,
@@ -84,6 +36,7 @@ SELECT
     gk_handling,
     gk_kicking,
     gk_positioning,
-    gk_reflexes,
-    CAST(date AS DATE) AS attribute_date -- Ensuring the date is in DATE format
-FROM source
+    gk_reflexes
+FROM {{ source('European_Soccer', 'Player_Attributes') }}
+WHERE overall_rating IS NOT NULL
+
